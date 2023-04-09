@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ReactModal from 'react-modal'
 import Calendar from 'react-calendar';
 import Times from './Time.jsx';
 import { useForm } from 'react-hook-form'
+import players from '../../fakePlayers';
 //import { yupResolver } from '@hookform/resolvers/yup';
 //import * as yup from 'yup';
 import axios from 'axios';
 import moment from 'moment';
 import TodayEvent from './EventsToday.jsx';
-
+import Select from 'react-select';
+import { UserContext } from '../userContext'
 // const schema = yup.object().shape({
 //   name: yup.string().required(),
 //   type: yup.string().required(),
@@ -56,6 +58,21 @@ function eventCalendar(){
 
   const [invites, setInvites] = useState([]);
 
+  //const { userInfo } = useContext(UserContext);
+  const [users, setUsers] = useState([]);
+
+
+
+
+const setPlayers = () => {
+setUsers(players);
+}
+
+console.log(users)
+
+
+
+// console.log(users);
 
 //is the current day for the get request
   const [eventsListDate, setEventsListDate] = useState(moment().format("YYYY-MM-DD"));
@@ -63,11 +80,6 @@ function eventCalendar(){
   const [eventsList, setEventsList] = useState([]);
 // event types
   const types = ['party', 'date drinks', 'business drinks', 'special occasion drinks', 'drinks with friends', 'holiday drinks', 'bar crawl drinks', 'just need an alone drink']
-
-
-
-
-
 
 
 
@@ -208,6 +220,13 @@ console.log(eventsListDate);
         <input className='form-control' {...register("location", {required: true})} onChange={event => setLocation(event.target.value)}/>
         <h4 className='create-form-heading'>Invite Friends</h4>
         <input className='form-control' {...register("invited", {required: false})} onChange={event => setInvites (event.target.value)}/>
+        <Select
+    isMulti
+    name="users"
+    // options={colourOptions}
+    className="basic-multi-select"
+    classNamePrefix="select"
+  />
         <div className='create-button'>
           <button className='btn btn-dark' type='submit'>
             {' '}
