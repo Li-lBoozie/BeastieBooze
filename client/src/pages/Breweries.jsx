@@ -216,9 +216,9 @@ const Breweries = () => {
           ) : (
             <div></div>
           )}
-          <div>
+          {/* <div>
             <button type='button' onClick={() => deleteCrawl()}>Delete Crawl</button>
-          </div>
+          </div> */}
         </div>
       </div>
 
