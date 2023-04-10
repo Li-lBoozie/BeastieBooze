@@ -113,7 +113,7 @@ const deleteEventList = () => {
   .then((response) => {
     alert(`you deleted all your events for ${eventsDate}`)
   })
-  .then(getEvents)
+  .then(getEvents())
   .catch((err) => {
     console.error('unable to delete calendar day', err);
   })
@@ -158,9 +158,11 @@ return (
 <Modal
   isOpen={modalIsOpen}
   onRequestClose={closeModal}
+  style="top: 100px; z-index: 1;"
 >
+<h1 style={{fontSize: "1.5rem"}}>Create Future Events, Search For Past Events</h1>
   <h1>Create Future Events, Search For Past Events</h1>
-  <button onClick={closeModal}>close</button>
+  <button onClick={closeModal}>Close Schedule</button>
   <button onClick={getEvents}>Get Events For a Date</button>
   <button onClick={deleteEventList}> Delete Today's Events </button>
   <form>
@@ -175,22 +177,35 @@ return (
       ></input>
   </form>
   <div className="today-event-entry">
-
   { eventData.map((event) => {
-      return <div className="today-event-data-list" key={event._id}  value={event._id} onChange={e => setEventId(e.target.value)}>
-      <EditText className="today-event-data"  defaultValue={event.name} onChange={e => setName(e.target.value)}/>
-      <div className="today-event-data" >{event.date}</div>
-      <EditText className="today-event-data"  defaultValue={event.type} onChange={e => setEventType(e.target.value)}/>
-      <EditText className="today-event-data" defaultValue={event.description} onChange={e => setDescription(e.target.value)}/>
-      <div className="today-event-data">{event.startTime}</div>
-      <EditText className="today-event-data" placeholder={event.endTime} onChange={e => setEndTime(e.target.value)}/>
-      <EditText className="today-event-data" defaultValue={event.location} onChange={e => setLocation(e.target.value)} />
-      <EditText className="today-event-data" defaultValue={event.invites} onChange={e => setInvites(e.target.value)}/>
-      {/* <button onClick={saveEventChanges}> Save Edits</button>
-      <button onClick={handleEventDelete}> Delete Event</button> */}
-      </div>
-      })}
-  </div>
+      return <table style={{borderCollapse: 'collapse', width: '100%'}}>
+      <thead>
+        <tr style={{backgroundColor: '#f2f2f2'}}>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Name</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Date</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Type</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Description</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Start Time</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>End Time</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Location</th>
+          <th style={{border: '1px solid #ddd', padding: '8px', color: '#666', textAlign: 'left'}}>Invites</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr key={event._id} style={{border: '1px solid #ddd'}}>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.name}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.date}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.type}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.description}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.startTime}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.endTime}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.location}</td>
+            <td style={{border: '1px solid #ddd', padding: '8px'}}>{event.invites}</td>
+          </tr>
+      </tbody>
+    </table>
+  })}
+    </div>
 </Modal>
 </div>
 
@@ -215,3 +230,11 @@ return (
 
 
 
+
+
+
+      {/* <button onClick={saveEventChanges}> Save Edits</button>
+      <button onClick={handleEventDelete}> Delete Event</button> */}
+  //     </div>
+  //     })}
+  // </div> */}
