@@ -13,6 +13,11 @@ const GoogleMapDirections = () => {
     height: '800px',
   };
 
+  const center = {
+    lat: 37.7749,
+    lng: -122.4194,
+  };
+
   const options = {
     disableDefaultUI: true,
     zoomControl: true,
