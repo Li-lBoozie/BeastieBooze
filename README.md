@@ -36,24 +36,70 @@ React Components:
 3.  Inside our components folder there is the App.jsx file which serves as the
     hub component of our app which is imported in our client\src\index.jsx file
 4.  App.jsx includes all of the routes to 'pages' within the App.
+5.  The alcohol quiz component maps through questions created and house in one of our asset files.
+Users have their scores saved into the database and on refresh, have their top five scores displayed.
+We wanted to allow multiple users to have their scores showing on the leaderboard but only had time to
+show the leaderboard of one user when they login in. The Quiz and Leaderboard are two different components,
+handling respective logics for the server side. POST request for quiz on the restart quiz button and
+GET request for the leaderboard.
 
 Pages:
 
-1.  Feed.jsx serves as the home 'page' of the app. UserContext is imported
+1.  GoogleMap.jsx is a user feature that allows the user to click one button and give them directions to walk back home.
+    When the user clicks the "Walk it Off, Buddy" button, the GoogleMap container is loaded.  Once the map is loaded,
+    the getDirections function is called and a request is made to the Google Maps directionService API with the user's
+    device's current GPS location and a hardcoded home address.  The directionsRequest object is returned and passed
+    into the directionsCallback function, which renders the directions to the map. A known issue is that this feature
+    is not functional right now on the deployed version of the app. More bug fixing needs to be done to determine why.
+
+2.  Calendar.jsx is a user feature that allows the user to keep track of their social calendar.
+    A user can create events for specific days of the year.This is accomplished by clicking on a
+    calendar day anywhere on the calendar, a modal form will appear to create an event, from there
+    the user will be able to select a date, type of event, write a description, pick a start time
+    and end time for the event. The last input box is to invite friends that are other users which
+    is not fully functioning. When a user clicks the "Submit" button, an alert will be shown at the
+    top of the page that the event has been created. The user will then be returned to the calendar
+    view, if the user clicks the button, see my schedule, a modal pop up will appear in which a calendar
+    option will be at the top left corner.The Time.jsx page is what populates the data from a selected
+    calendar day to see those events created for a specific calendar day. If the user wishes, they can
+    delete all events for a specific day by clicking the delete button. The events for the selected day
+    should disappear immediately. If a user clicks out of the pop-up box they'll be returned to the calendar view.
+
+3.  The Breweries.jsx file holds the code for the "Where Dat Beer?" page. The page
+    shows a map, set by default to a view of New Orleans. The user can enter the name
+    of a city in the "Search City" field, and a list of the breweries in that city
+    will populate in a list from the 'https://api.openbrewerydb.org' API. The locations
+    of these breweries will also populate as pin markers on the map. If the user hovers
+    over a marker, an info window will appear with information on that brewery and a button
+    to save the brewery to a bar crawl. Once a user has added all the breweries they want
+    to a bar crawl, the can name their bar crawl and save it. Later, they can choose from
+    among their saved bar crawls to show the breweries in that bar crawl. Future functionality
+    would auto populate a route on the map for the selected bar crawl. One functionality that does
+    not currently exist is a "zoom view to" functionality. Right now the map is defaulted to
+    New Orleans. If other cities are searched, the will populate on the map, but the map
+    will not zoom the view to that city. The user currently has to drag the map to that city.
+    As a note, the data from the Brewery API does not flow seamlessly into the Google Maps API.
+    It had to be "cleansed" through a function to create the coordinates object the Google Maps API
+    needed in order to recognize and use the data from the API.
+
+4.  Feed.jsx serves as the home 'page' of the app. UserContext is imported
     in to give access to whether or not a visitor is logged in and their
     information. BoozeContext is imported to populate the feed using the
     state of drinksFeed which holds drinks pulled from the API. The drinks
     are passed to the component <DrinkTile> as props. Also the Feed is
     populated with non-alcoholic drinks if the visitor is underage.
-2.  CustomFeed.jsx works similarly to Feed.jsx except is renders drinks from
+
+5.  CustomFeed.jsx works similarly to Feed.jsx except is renders drinks from
     our database that are user creations and sends those to <CustomDrinkTile>
     as props. Our custom drinks have images parsed in through the helper
     function imageUrlParser found at client\utils\imageUrls.js
-3.  Search.jsx we use react-hook-form to power our search feature. We use
+
+6.  Search.jsx we use react-hook-form to power our search feature. We use
     our searchDrinks function declared in BoozeContext and use register
     and handleSubmit from useForm to make a search that returns results
     directly under our search bar from our <SearchFeed> component.
-4.  DrinkView.jsx renders the view that details the information from individual
+
+7.  DrinkView.jsx renders the view that details the information from individual
     drinks fetched by the API. It includes an image of the drink, its description
     whether or not it is alcoholic, the glass it is beset enjoyed in, and
     instructions for concocting the drink. To render the ingredient information
@@ -63,7 +109,8 @@ Pages:
     removeButton. This is dependent on the state of isLoggedIn coming from
     userContext. DrinkView also has a subcomponent that allows users to submit
     a review.
-5.  CustomDrinkView.jsx is the database equivalent to DrinkView it has much
+
+8.  CustomDrinkView.jsx is the database equivalent to DrinkView it has much
     of the same features except it receives drink information in different
     formats as it is passed props of drink information using useLocation from
     react-router-dom instead of a call to the database each time it is rendered.
@@ -75,19 +122,22 @@ Pages:
     to this discrepancy in naming customDrinkView has conditional logic so that is
     able to handle information from both sources. This can be streamlined and reconfigured
     to be more efficient.
-6.  Create.jsx powers the Submit 'page' of the App which enables users to submit drinks.
+
+9.  Create.jsx powers the Submit 'page' of the App which enables users to submit drinks.
     Like our search feature this component uses react-hook-form to power its submission.
     We also utilize yup for form validation. Each user submission is sent to the database
     through the makeADrink function from BoozeContext and the User Schema is updated with
     this user's new creation through the addCreation function from UserContext.
-7.  Profile.jsx is the 'page' that stores our users creations and favorites. Their favorites
+
+10. Profile.jsx is the 'page' that stores our users creations and favorites. Their favorites
     are stored in state and are populated when the user logs in and is added to each time
     they hit the favorite button on the CustomDrinkView and DrinkView pages. Their creations
     are set from their creations array in their User Schema and comes from userInfo from
     UserContext. The components which hold this information are UserFavorites and UserCreations.
     When clicking on the name of a favorite or creation the user is navigated to that drinks
     individual view.
-8.  Review.jsx is a user feature that allows the user to input a review for a specific drink they
+
+11. Review.jsx is a user feature that allows the user to input a review for a specific drink they
     are viewing. This is accomplished by referencing the drink id of the drink object being viewed.
     When a user clicks the "Submit A Review" button, a modal appears with a text input field and
     when the review is submitted it is saved to the review model in models.js along with the username
